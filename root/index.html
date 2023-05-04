@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search Bar</title>
+	<style>
+		body {
+			background-image: url('C:/Users/8ashi/Downloads/drive-download-20230410T050954Z-001/pexels-fabian-wiktor-994605.jpg');
+			background-size: cover;
+		}
+		.container {
+			position: relative;
+		}
+		.time-container {
+			font-family: arial;
+			position: absolute;
+			top: 165px;
+			left: 50%;
+			letter-spacing: -5px;
+			transform: translateX(-50%);
+			font-size: 142px;
+			color: #FFFFFF;
+			text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+		}
+        .name-container {
+            font-family: arial;
+            position: absolute;
+            top: 320px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+            color: #FFFFFF;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.5);
+        }
+        .name-form {
+            display: none;
+            position: absolute;
+            top: 400px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .name-form input[type="text"] {
+    	width: 500px;
+    	height: 40px;
+    	border-radius: 20px;
+    	border: none;
+    	padding: 12px 40px;
+    	font-size: 30px;
+    	color: #deceb0;
+    	outline: none;
+    	opacity: 1;
+    	background-color: rgba(255, 255, 255, 0.5);
+    	border-radius: 40px;
+    	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    	backdrop-filter: blur(8px);
+	}
+
+	.name-form input[type="text"]::placeholder {
+    	color: 0,0,0,0;
+    	opacity: 0.7;
+	}
+
+        .name-form input[type="submit"] {
+            display:none ;
+        }
+		.search-container {
+			position:absolute ;
+			top :420px ;
+			left :50% ;
+			transform :translateX(-50%) ;
+			display :flex ;
+			align-items :center ;
+			justify-content :center ;
+		}
+		.search-bar {
+			width :590px ;
+			height :55.5px ;
+			background-color :rgba(255 ,255 ,255 ,.5) ;
+			border-radius :40px ;
+			box-shadow :0px 2px 5px rgba(0 ,0 ,0 ,.1) ;
+			backdrop-filter :blur(8px) ;
+		}
+		.search-bar input[type="text"] {
+			width :100% ;
+			height :100% ;
+			border-radius :20px ;
+			border :none ;
+			padding :10px 40px ;
+			font-size :30px ;
+			color:#DECEB0 ;
+			outline:none ;
+            opacity :1 ;
+            background-color : transparent ;
+        }
+        .search-bar input[type="text"]::placeholder{
+            color:#FFFFFF ;
+            opacity : .7 ;
+        }
+    </style>
+</head>
+<button onclick="deleteName()">Delete my name</button>
+
+<script>
+    function deleteName() {
+        localStorage.removeItem("name");
+        location.reload();
+    }
+</script>
+<body>
+    <div class="container">
+        <div class="time-container">
+            <div id="time"></div>
+        </div>
+        <div class="name-container">
+            <div id="name"></div>
+        </div>
+        <form class="name-form" onsubmit="submitName(event)">
+            <input type="text" name="name" placeholder="Enter your name">
+            <input type="submit" value="Submit">
+        </form>
+        <div class="search-container">
+            <div class="search-bar">
+                <form action="https://www.google.com/search" method="get">
+                    <input type="text" name="q" placeholder="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            let now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours <10 ? "0" + hours : hours ;
+            minutes = minutes <10 ? "0" + minutes : minutes ;
+            let timeString = hours + ":" + minutes ;
+            document.getElementById("time").textContent = timeString ;
+        }
+
+        setInterval(updateTime ,1000) ;
+
+        function updateName() {
+    		let name = localStorage.getItem("name");
+    		let now = new Date();
+    		let hours = now.getHours();
+    		let greeting = "";
+    		if (hours >= 5 && hours < 12) {
+        		greeting = "Good morning";
+    		} else if (hours >= 12 && hours < 18) {
+        		greeting = "Good afternoon";
+    		} else {
+        		greeting = "Good evening";
+   		}
+    		if (!name) {
+        		document.querySelector(".name-form").style.display = "block";
+        		document.querySelector(".search-container").style.display = "none";
+    		} else {
+        		document.getElementById("name").textContent = greeting + ", " + name + ".";
+        		document.querySelector(".name-form").style.display = "none";
+        		document.querySelector(".search-container").style.display = "block";
+    		}
+	}
+
+
+        function submitName(event) {
+            event.preventDefault();
+            let name = document.querySelector(".name-form input[name='name']").value;
+            localStorage.setItem("name", name);
+            location.reload();
+        }
+
+        updateName();
+    </script>
+
+</body>
